@@ -113,7 +113,7 @@ namespace TtfConverterNet
                 bw.Dispose();
             }
 
-            Console.WriteLine("TTf file '{0}' has been converted", ttfOriginFile);
+            Console.WriteLine("TTf file '{0}' has been converted.", ttfOriginFile);
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
         }
