@@ -30,7 +30,7 @@ namespace TtfConverterNet
 
             if(!File.Exists(ttfOriginFile))
             {
-                Console.WriteLine("TTF origin file does not exist.");
+                Console.WriteLine("TTF origin file does not exist");
                 Console.WriteLine("Press any key to exit...");
                 Console.ReadKey();
                 return;
