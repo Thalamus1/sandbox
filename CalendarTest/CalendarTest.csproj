@@ -1029,6 +1029,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\Home\index.html" />
+    <Content Include="Views\Shared\WeekViewEventBody.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1064,6 +1065,7 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Scripts\version.json" />
+    <Content Include="Views\Shared\WeekViewEventHeader.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include=".bin\" />

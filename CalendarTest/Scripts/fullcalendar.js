@@ -21,6 +21,31 @@
 var fc = $.fullCalendar = { version: "2.3.2" };
 var fcViews = fc.views = {};
 
+var templates = [
+    { name: "WeekViewEvent", mapping: ["%%classes%%", "%%slotsAvailable%%", "%%slotsTotal%%"], inner: { name: "$$WeekViewEventBody$$", mapping: ["%%tierTitle%%", "%%slotsText%%"] } }
+];
+
+function getHTMLstring(template, values, innerValues) {
+    var html = document.querySelector('#' + template.name).innerHTML;
+    var counter = 0;
+    template.mapping.forEach(function (item) {
+        html = replaceAll(item, values[counter], html);
+        counter++;
+    });
+
+    if (template.inner) {
+        innerValues.forEach(function(item) {
+
+        });
+    }
+
+    return html;
+};
+
+function replaceAll(find, replace, str) {
+    return str.replace(new RegExp(find, 'g'), replace);
+}
+
 
 $.fn.fullCalendar = function(options) {
 	var args = Array.prototype.slice.call(arguments, 1); // for a possible method call
@@ -6328,26 +6353,34 @@ TimeGrid.mixin({
 		    });
 		}
 
-	    var result = '<a class="' + classes.join(' ') + '"' +
-	        (event.url ?
-	                ' href="' + htmlEscape(event.url) + '"' :
-	                ''
-	        ) +
-	        (skinCss ?
-	                ' style="' + skinCss + '"' :
-	                ''
-	        ) +
-	        '>' +
-	        '<div class="fc-content">' +
-	        '<div class="fc-title" style="margin-right: 50px">' +
-	        '<div style="float: left; width: 100%">' +
-	        htmlEscape("Slots occupied: ") +
-	        '</div>' +
-	        '<div style="float: right; width: 50px; margin-right: -50px; text-align: right">' +
-	        htmlEscape(slotsAvailable + ' of ' + slotsTotal) +
-	        '</div>' +
-	        '<div style="clear: both"></div>' +
-	        '</div>';
+		var values = [];
+	    values.push(classes.join(' '));
+	    values.push(slotsAvailable);
+	    values.push(slotsTotal);
+
+	    var result = getHTMLstring(templates[0], values);
+
+	    //var result = '<a class="' + classes.join(' ') + '"' +
+	    //    (event.url ?
+	    //            ' href="' + htmlEscape(event.url) + '"' :
+	    //            ''
+	    //    ) +
+	    //    (skinCss ?
+	    //            ' style="' + skinCss + '"' :
+	    //            ''
+	    //    ) +
+	    //    '>' +
+	    //    '<div class="fc-content">' +
+	    //    '<div class="fc-title" style="margin-right: 50px">' +
+	    //    '<div style="float: left; width: 100%">' +
+	    //    htmlEscape("Slots occupied: ") +
+	    //    '</div>' +
+	    //    '<div style="float: right; width: 50px; margin-right: -50px; text-align: right">' +
+	    //    htmlEscape(slotsAvailable + ' of ' + slotsTotal) +
+	    //    '</div>' +
+	    //    '<div style="clear: both"></div>' +
+	    //    '</div>';
+
 	        //(timeText ?
 	        //        '<div class="fc-time"' +
 	        //        ' data-start="' + htmlEscape(startTimeText) + '"' +
@@ -6358,18 +6391,26 @@ TimeGrid.mixin({
 	        //        ''
 	        //);
 
+	    //if (event.distribution) {
+	    //    event.distribution.forEach(function (item) {
+	    //        result = result + '<div class="fc-title" style="margin-right: 50px">' +
+        //            '<div style="float: left; width: 100%">' +
+        //            htmlEscape(item.tierTitle) +
+        //            '</div>' +
+        //            '<div style="float: right; width: 50px; margin-right: -50px; text-align: right">' +
+        //            (item.slotsTotal ? htmlEscape(item.slots + ' of ' + item.slotsTotal) : htmlEscape(item.slots)) +
+        //            '</div>' +
+        //            '<div style="clear: both"></div>' +
+        //            '</div>'
+	    //    });
+        //}
+	    var counter = 0;
 	    if (event.distribution) {
-	        event.distribution.forEach(function (item) {
-	            result = result + '<div class="fc-title" style="margin-right: 50px">' +
-                    '<div style="float: left; width: 100%">' +
-                    htmlEscape(item.tierTitle) +
-                    '</div>' +
-                    '<div style="float: right; width: 50px; margin-right: -50px; text-align: right">' +
-                    (item.slotsTotal ? htmlEscape(item.slots + ' of ' + item.slotsTotal) : htmlEscape(item.slots)) +
-                    '</div>' +
-                    '<div style="clear: both"></div>' +
-                    '</div>'
-	        });
+	        templates[0].inner.values = [];
+	        var values = [];
+	        values.push(htmlEscape(item.tierTitle));
+	        values.push(htmlEscape((item.slotsTotal ? htmlEscape(item.slots + ' of ' + item.slotsTotal) : htmlEscape(item.slots))));
+	        templates[0].inner.values.push(values);
         }
 	    
 	    result = result + '</div>' +
@@ -10969,3 +11010,4 @@ fcViews.agendaWeek = {
 
 return fc; // export for Node/CommonJS
 });
+
