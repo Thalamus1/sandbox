@@ -211,6 +211,7 @@
     <Content Include="Scripts\AngularDemo\calendar.js" />
     <Content Include="Scripts\AngularDemo\calendarDemo.css" />
     <Content Include="Scripts\AngularDemo\calendarDemo.js" />
+    <Content Include="Scripts\AngularDemo\templates.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\fullcalendar-2.3.2\demos\json\events.json" />

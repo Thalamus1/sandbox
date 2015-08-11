@@ -4,29 +4,13 @@
 var app = angular.module('calendarDemoApp', ['ui.calendar', 'ui.bootstrap'])
         .controller('CalendarCtrl', CalendarCtrl);
 
-
-app.config(function ($sceDelegateProvider) {
-    $sceDelegateProvider.resourceUrlWhitelist(['self', '**']);
-});
-
-app.constant('URL', 'data/');
-
-
-app.factory('TemplateService', function ($http, URL) {
-    var getTemplates = function () {
-        return $http.get(URL + 'templates.json');
-    };
-
-    return {
-        getTemplates: getTemplates
-    };
-});
-
-function CalendarCtrl($scope, $compile, $timeout, uiCalendarConfig, TemplateService) {
+function CalendarCtrl($scope, $compile, $timeout, uiCalendarConfig) {
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
     var y = date.getFullYear();
+
+    $scope.eventTemplates = eventTemplates;
 
     $scope.changeTo = 'Hungarian';
     /* event source that pulls from google.com */
@@ -37,12 +21,12 @@ function CalendarCtrl($scope, $compile, $timeout, uiCalendarConfig, TemplateServ
     };
     /* event source that contains custom events on the scope */
     $scope.events = [
-      { title: 'All Day Event', start: new Date(y, m, 1) },
-      { title: 'Long Event', start: new Date(y, m, d - 5), end: new Date(y, m, d - 2) },
-      { id: 999, title: 'Repeating Event', start: new Date(y, m, d - 3, 16, 0), allDay: false },
-      { id: 999, title: 'Repeating Event', start: new Date(y, m, d + 4, 16, 0), allDay: false },
-      { title: 'Birthday Party', start: new Date(y, m, d + 1, 19, 0), end: new Date(y, m, d + 1, 22, 30), allDay: false },
-      { title: 'Click for Google', start: new Date(y, m, 28), end: new Date(y, m, 29), url: 'http://google.com/' }
+      { title: 'All Day Event', start: new Date(y, m, d), end: new Date(y, m, d), occupied: 10, guaranteed: 15 },
+      { title: 'Long Event', start: new Date(y, m, d - 5), end: new Date(y, m, d - 2), occupied: 15, guaranteed: 15 },
+      { id: 999, title: 'Repeating Event', start: new Date(y, m, d - 3, 16, 0), allDay: false, occupied: 11, guaranteed: 15 },
+      { id: 999, title: 'Repeating Event', start: new Date(y, m, d + 4, 16, 0), allDay: false, occupied: 10, guaranteed: 15 },
+      { title: 'Birthday Party', start: new Date(y, m, d + 1, 19, 0), end: new Date(y, m, d + 1, 22, 30), allDay: false, occupied: 10, guaranteed: 15 },
+      { title: 'Click for Google', start: new Date(y, m, 28), end: new Date(y, m, 29), url: 'http://google.com/', occupied: 15, guaranteed: 15 }
     ];
     /* event source that calls a function on every view switch */
     $scope.eventsF = function (start, end, timezone, callback) {
@@ -113,18 +97,17 @@ function CalendarCtrl($scope, $compile, $timeout, uiCalendarConfig, TemplateServ
         });
     };
 
-
-    function getTemplate (templates, viewMode) {
+    function getTemplate(templates, viewMode) {
         var template = '';
 
         switch (viewMode) {
             case 'month':
                 template = templates.monthTemplate;
                 break;
-            case 'week':
+            case 'agendaWeek':
                 template = templates.weekTemplate;
                 break;
-            case 'day':
+            case 'agendaDay':
                 template = templates.dayTemplate;
                 break;
         }
@@ -132,18 +115,46 @@ function CalendarCtrl($scope, $compile, $timeout, uiCalendarConfig, TemplateServ
         return template;
     };
 
-    /* Render Tooltip */
+    function getEventStatus(occupiedSlotsCount, guaranteedSlotsCount) {
+        var statuses = ['available', 'near-capacity', 'full-capacity'];
+
+        if (occupiedSlotsCount == guaranteedSlotsCount) {
+            return statuses[2];
+        }
+
+        if (guaranteedSlotsCount - occupiedSlotsCount <= 4) {
+            return statuses[1];
+        }
+
+        return statuses[0];
+    }
+
+    function createEventViewModel(event) {
+        var eventViewModel = {};
+
+        eventViewModel.parsedStart = Date.parse(event.start);
+        if (event.end) { eventViewModel.parsedEnd = Date.parse(event.end); }
+
+        eventViewModel.occupiedSlotsCount = event.occupied;
+        eventViewModel.guaranteedSlotsCount = event.guaranteed;
+
+        eventViewModel.eventStatus = getEventStatus(eventViewModel.occupiedSlotsCount, eventViewModel.guaranteedSlotsCount);
+        eventViewModel.title = event.title;
+
+        return eventViewModel;
+    }
+
     $scope.eventRender = function (event, element, view) {
-        
-        TemplateService.getTemplates().then(function (response) {
-            var templates = response.data;
+        var currentScope = $scope.$new(true);
+        currentScope.eventViewModel = createEventViewModel(event);
 
-            var currentScope = $scope.$new(true);
-            currentScope.eventViewModel = event;
+        var template = getTemplate($scope.eventTemplates, view.type);
+        var compiledTemplate = $compile(template)(currentScope);
 
-            element.html($compile(getTemplate(templates, view.type))(currentScope));
-        });
+        return compiledTemplate;
     };
+
+    $scope.data = false;
 
     /* config object */
     $scope.uiConfig = {

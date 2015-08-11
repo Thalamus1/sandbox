@@ -1,3 +1,4 @@
 ﻿{
-    "monthTemplate": "<div ng-controller='CalendarCtrl' class='event-container'><div class='title'>Interview Date Title</div><div class='event-date'><span data-bind='text:start'></span>&nbsp;-&nbsp;<span data-bind='text:end'>{{eventViewModel.title}}</span></div><div class='event-title' data-bind='text:title'></div></div>"
+    "monthTemplate": "<div class='event-container'><div class='event-date'><span>{{eventViewModel.start | date : 'MM/dd/yyyy'}}</span>&nbsp;-&nbsp;<span>{{eventViewModel.end | date : 'MM/dd/yyyy'}}</span></div><div class='event-title'></div></div>",
+    "weekTemplate": "<div ng-controller='CalendarCtrl' class='event-container'><div class='title'>Interview Date Title</div><div class='event-date'><span data-bind='text:start'></span>&nbsp;-&nbsp;<span data-bind='text:end'>{{eventViewModel.title}}</span></div><div class='event-title' data-bind='text:title'></div></div>"
 }

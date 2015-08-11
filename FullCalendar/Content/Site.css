@@ -1,24 +1,103 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿*
+{
+    padding: 0;
+    margin: 0;
+    border: none;
+    -webkit-box-sizing: border-box !important;
+    -moz-box-sizing: border-box !important;
+    box-sizing: border-box !important;
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+.content
+{
+    width: 1440px;
+    margin: 0 auto;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-    white-space: normal;
+.fc-row .fc-content-skeleton tbody td, .fc-row .fc-helper-skeleton tbody td
+{
+    padding: 0 2px;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+.available
+{
+    background: #4fa5bb;
+}
+
+.near-capacity
+{
+    background: #D6C42B;
+}
+
+.full-capacity
+{
+    background: #ff3467;
+}
+
+.event-container
+{
+    width: 100%;
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+    margin: 2px 0;
+}
+
+.event-container.month
+{
+    display: table;
+}
+
+.event-container.month .event-date
+{
+    width: 50%;
+    float: left;
+    padding: 2px;
+}
+
+.event-container.month .event-slots
+{
+    text-align: right;
+    width: 50%;
+    float: right;
+    padding: 2px;
+}
+
+.event-container.week
+{
+    padding-bottom: 50px;
+}
+
+.event-container.week .header, .event-container.week .event-slots, .event-container.week .event-waitlist
+{
+    padding: 20px;
+}
+
+.event-container.week .header
+{
+    border-bottom: 1px solid #a6d1dc;
+    padding-bottom: 10px;
+}
+
+.event-container.week .event-date, .event-container.week .title
+{
+    font-size: 18px;
+    line-height: 1;
+}
+
+.event-container.week .event-time
+{
+    padding-top: 10px;
+    font-size: 14px;
+    color: #8ec5d3;
+}
+
+.event-container.week .event-slots [class*='col-sm']
+{
+    padding: 0;
+}
+
+.event-container.week .event-slots .row
+{
+    margin: 5px 0;
 }

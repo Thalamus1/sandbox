@@ -1,11 +1,50 @@
-﻿@section scripts
-{
-    <script type="text/javascript" src="~/Scripts/ACS/App.js"></script>
-    <script type="text/javascript" src="~/Scripts/ACS/calendarCtrl.js"></script>
-}
-
-<div class="container">
-    <div ng-controller="calendarEvent">
-        <div id="calendar" ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div>
+﻿@*Month*@
+<div ng-class='eventViewModel.parsedEnd'>
+    <div class='event-container month'>
+        <div class='event-date'>
+            <span>{{eventViewModel.parsedStart | date : 'MM/dd/yyyy'}}</span><span ng-show='eventViewModel.parsedEnd'>&nbsp;-&nbsp;{{eventViewModel.parsedEnd | date : 'MM/dd/yyyy'}}</span>
+        </div>
+        <div class='event-slots'>
+            <span>{{eventViewModel.occupiedSlotsCount}}</span>&nbsp;of&nbsp;<span>{{eventViewModel.guaranteedSlotsCount}}</span>
+        </div>
     </div>
 </div>
+
+@*Week*@
+<div ng-class='eventViewModel.eventStatus' class='event-container week'>
+    <div class='header'>
+        <div class='event-date'><span>{{eventViewModel.parsedStart | date : 'MM/dd/yyyy'}}</span></div>
+        <div class='title'>{{eventViewModel.title}}</div>
+        <div class='event-time'><span>{{eventViewModel.parsedStart | date : 'hh:mm a'}}</span><span>&nbsp;-&nbsp;{{eventViewModel.parsedEnd | date : 'hh:mm a'}}</span></div>
+    </div>
+    <div class='event-slots'>
+        <div class='row'>
+            <div class='col-sm-8'>Slots occupied:</div>
+            <div class='col-sm-4'><span> {{eventViewModel.occupiedSlotsCount}}</span>&nbsp;of&nbsp;<span>{{eventViewModel.guaranteedSlotsCount}}</span></div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-8'>Tier 1</div>
+            <div class='col-sm-4'><span> {{eventViewModel.occupiedSlotsTier1Count}}</span>&nbsp;of&nbsp;<span>{{eventViewModel.guaranteedSlotsTier1Count}}</span></div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-8'>Tier 2</div>
+            <div class='col-sm-4'><span> {{eventViewModel.occupiedSlotsTier2Count}}</span>&nbsp;of&nbsp;<span>{{eventViewModel.guaranteedSlotsTier2Count}}</span></div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-8'>Tier 3</div>
+            <div class='col-sm-4'><span> {{eventViewModel.occupiedSlotsTier3Count}}</span>&nbsp;of&nbsp;<span>{{eventViewModel.guaranteedSlotsTier3Count}}</span></div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-8'>Tier OAO</div>
+            <div class='col-sm-4'><span> {{eventViewModel.occupiedSlotsTierOAOCount}}</span>&nbsp;of&nbsp;<span>{{eventViewModel.guaranteedSlotsTierOAOCount}}</span></div>
+        </div>
+    </div>
+    <div class='event-waitlist'>
+        <div class='row'>
+            <div class='col-sm-8'>Waitlist:</div>
+            <div class='col-sm-4'>{{eventViewModel.waitlistCount}}</div>
+        </div>
+    </div>
+</div>
+
+<div ng-class='eventViewModel.eventStatus' class='event-container week'><div class='header'><div class='event-date'><span>{{eventViewModel.parsedStart | date : 'MM/dd/yyyy'}}</span></div><div class='title'>{{eventViewModel.title}}</div><div class='event-time'><span>{{eventViewModel.parsedStart | date : 'hh:mm a'}}</span><span>&nbsp;-&nbsp;{{eventViewModel.parsedEnd | date : 'hh:mm a'}}</span></div></div><div class='event-slots'><div class='row'><div class='col-sm-8'>Slots occupied:</div><div class='col-sm-4'><span> {{eventViewModel.occupiedSlotsCount}}</span>&nbsp;of&nbsp;<span>{{eventViewModel.guaranteedSlotsCount}}</span></div></div><div class='row'><div class='col-sm-8'>Tier 1</div><div class='col-sm-4'><span> {{eventViewModel.occupiedSlotsTier1Count}}</span>&nbsp;of&nbsp;<span>{{eventViewModel.guaranteedSlotsTier1Count}}</span></div></div><div class='row'><div class='col-sm-8'>Tier 2</div><div class='col-sm-4'><span> {{eventViewModel.occupiedSlotsTier2Count}}</span>&nbsp;of&nbsp;<span>{{eventViewModel.guaranteedSlotsTier2Count}}</span></div></div><div class='row'><div class='col-sm-8'>Tier 3</div><div class='col-sm-4'><span> {{eventViewModel.occupiedSlotsTier3Count}}</span>&nbsp;of&nbsp;<span>{{eventViewModel.guaranteedSlotsTier3Count}}</span></div></div><div class='row'><div class='col-sm-8'>Tier OAO</div><div class='col-sm-4'><span> {{eventViewModel.occupiedSlotsTierOAOCount}}</span>&nbsp;of&nbsp;<span>{{eventViewModel.guaranteedSlotsTierOAOCount}}</span></div></div></div><div class='event-waitlist'><div class='row'><div class='col-sm-8'>Waitlist:</div><div class='col-sm-4'>{{eventViewModel.waitlistCount}}</div></div></div></div>
